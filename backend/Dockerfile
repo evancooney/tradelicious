@@ -2,7 +2,7 @@
 FROM node:20
 
 # Create app directory
-WORKDIR /usr/src/app
+WORKDIR /dist
 
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 COPY package*.json ./
@@ -13,7 +13,7 @@ RUN yarn install
 # Bundle app source
 COPY . .
 
-RUN yarn build
+RUN yarn run build
 
 # Start the server using the production build
 CMD [ "node", "index.ts" ]
