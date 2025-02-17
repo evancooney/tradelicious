@@ -11,7 +11,7 @@ COPY package*.json ./
 RUN npm install
 
 # Bundle app source
-COPY . /app
+COPY . .
 
 # Start the server using the production build
 CMD [ "node", "index.js" ]
