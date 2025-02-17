@@ -2,7 +2,7 @@
 FROM node:18
 
 # Create app directory
-WORKDIR /
+WORKDIR /app
 
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 COPY package*.json ./
@@ -11,7 +11,7 @@ COPY package*.json ./
 RUN npm install
 
 # Bundle app source
-COPY . .
+COPY . /app
 
 # Start the server using the production build
 CMD [ "node", "index.js" ]
