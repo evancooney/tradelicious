@@ -9,7 +9,7 @@
    
     "ts-node": "^10.9.2"
   },  
-   "type": "module",
+   "type": "commonjs",
 
   "devDependencies": {
     "@hapi/hapi": "^21.3.12",
