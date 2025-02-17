@@ -14,7 +14,8 @@ RUN npm install
 COPY . .
 
 # Start the server using the production build
-CMD [ "node", "index.js" ]
+#CMD [ "node", "index.js" ]
+RUN npm start
 
 # Exposing server port
 EXPOSE 3000
