@@ -9,6 +9,8 @@
    
     "ts-node": "^10.9.2"
   },  
+   "type": "module",
+
   "devDependencies": {
     "@hapi/hapi": "^21.3.12",
     "@types/hapi": "^18.0.14",
