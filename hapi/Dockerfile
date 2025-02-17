@@ -16,7 +16,7 @@ COPY . .
 RUN yarn run build
 
 # Start the server using the production build
-CMD [ "node", "dist/index.js" ]
+CMD [ "node", "dist/index.ts" ]
 
 # Exposing server port
 EXPOSE 4000
