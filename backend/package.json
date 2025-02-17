@@ -8,9 +8,9 @@
   },
   "scripts": {
     "build": "tsc",
-    "start": "yarn build && node dist/index.js",
+    "start": "yarn build && node dist/index.ts",
     "dev": "npm-run-all -p dev:*",
     "dev:build": "tsc -w",
-    "dev:server": "nodemon dist/index.js"
+    "dev:server": "nodemon dist/index.ts"
   }
 }
