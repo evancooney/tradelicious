@@ -15,7 +15,8 @@ COPY . .
 
 # Start the server using the production build
 #CMD [ "node", "index.js" ]
-CMD ["npm", "run", "start" ]
+#CMD ["npm", "run", "start" ]
+CMD [ "node", "src/index.js" ]
 
 # Exposing server port
 EXPOSE 3000
