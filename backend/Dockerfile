@@ -13,6 +13,8 @@ RUN yarn install
 # Bundle app source
 COPY . .
 
+RUN yarn buld
+
 # Start the server using the production build
 CMD [ "node", "index.ts" ]
 
