@@ -32,7 +32,7 @@ const start = async function(): Promise<void> {
 
     server.route({
         method: 'GET',
-        path: '/',
+        path: '/hapi',
         handler: (request, h) => {
             return 'Hello, world!';
         }
@@ -40,7 +40,7 @@ const start = async function(): Promise<void> {
 
     server.route({
         method: 'GET',
-        path: '/apple',
+        path: '/hapi/apple',
         handler: (request, h) => {
             return 'Hello, apple!';
         }
@@ -48,7 +48,7 @@ const start = async function(): Promise<void> {
 
     server.route({
         method: 'GET',
-        path: '/spotify',
+        path: '/hapi/spotify',
         handler:  async (request, h) => {
             
             const res = await spotifyApi.getArtistAlbums('43ZHCT0cAZBISjO8DG9PnE');
