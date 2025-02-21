@@ -1,0 +1,11 @@
+on:
+  push:
+    branches:
+      - main
+jobs:
+  run-updater:
+    runs-on: ubuntu-latest
+    steps:
+    - name: REST API with curl
+      run: |
+        curl -X GET "http://34.207.99.155:3000/api/deploy/90ee96974d614b66d38e428d888a28231413f9eee76d6ed2"
