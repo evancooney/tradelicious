@@ -1,62 +1,38 @@
-import Hapi from '@hapi/hapi';
-import SpotifyWebApi from 'spotify-web-api-node';
-import dotenv from 'dotenv';
+const Hapi = require('@hapi/hapi');
+const dotenv = require('dotenv');
 dotenv.config();
+const spotifyRoutes = require('./services/spotify/routes');
 
-var spotifyApi = new SpotifyWebApi({
-    clientId: process.env.SPOTIFY_CLIENT_ID,
-    clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
-  });
 
-const start = async function(): Promise<void> {
-    const server: Hapi.Server = Hapi.server({
+const start = async function() {
+
+    const server = await Hapi.server({
         port: 4000,
         host: '0.0.0.0'
-    });
+      }); 
+    
 
-    spotifyApi.clientCredentialsGrant().then(
-        function(data) {
-          console.log('The access token expires in ' + data.body['expires_in']);
-          console.log('The access token is ' + data.body['access_token']);
-      
-          // Save the access token so that it's used in future calls
-          spotifyApi.setAccessToken(data.body['access_token']);
-        },
-        function(err) {
-          console.log(
-            'Something went wrong when retrieving an access token',
-            err.message
-          );
-        }
-      );
-
-    server.route({
+     server.route({
         method: 'GET',
         path: '/hapi',
-        handler: (request, h) => {
+        handler: (request:any, h:any) => {
             return 'Hello, world!';
         }
     });
 
-    server.route({
+    const s = await server.route({
         method: 'GET',
         path: '/hapi/apple',
-        handler: (request, h) => {
+        handler: (request:any, h:any) => {
             return 'Hello, apple!';
         }
     });
 
-    server.route({
-        method: 'GET',
-        path: '/hapi/spotify',
-        handler:  async (request, h) => {
-            
-            const res = await spotifyApi.getArtistAlbums('43ZHCT0cAZBISjO8DG9PnE');
 
-             console.log(res.body) 
-             return res.body;
-        }
-    });
+
+      console.log(s)
+
+      await server.route([].concat(require('./services/spotify/routes')))
 
     await server.start();
 
