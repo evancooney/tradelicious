@@ -1,4 +1,12 @@
 import Hapi from '@hapi/hapi';
+import SpotifyWebApi from 'spotify-web-api-node';
+import dotenv from 'dotenv';
+dotenv.config();
+
+var spotifyApi = new SpotifyWebApi({
+    clientId: process.env.SPOTIFY_CLIENT_ID,
+    clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+  });
 
 const start = async function(): Promise<void> {
     const server: Hapi.Server = Hapi.server({
@@ -6,11 +14,49 @@ const start = async function(): Promise<void> {
         host: '0.0.0.0'
     });
 
+    spotifyApi.clientCredentialsGrant().then(
+        function(data) {
+          console.log('The access token expires in ' + data.body['expires_in']);
+          console.log('The access token is ' + data.body['access_token']);
+      
+          // Save the access token so that it's used in future calls
+          spotifyApi.setAccessToken(data.body['access_token']);
+        },
+        function(err) {
+          console.log(
+            'Something went wrong when retrieving an access token',
+            err.message
+          );
+        }
+      );
+
     server.route({
         method: 'GET',
         path: '/',
         handler: (request, h) => {
             return 'Hello, world!';
+        }
+    });
+
+    server.route({
+        method: 'GET',
+        path: '/spotify',
+        handler:  async (request, h) => {
+            
+            const res = await spotifyApi.getArtistAlbums('43ZHCT0cAZBISjO8DG9PnE')//.then(
+                // function(data) {
+                //   console.log('Artist albums', data.body);
+                //   return data.body;
+                // },
+                // function(err) {
+                //   console.error(err);
+                // }
+
+                
+              //);
+
+             console.log(res.body) 
+             return res.body;
         }
     });
 

@@ -6,6 +6,10 @@
   "author": "Evan Cooney <evancooney@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "spotify-web-api-node": "^5.0.2"
+  },
+  "devDependencies": {
+    "@types/spotify-web-api-node": "^5.0.11"
   }
 }

@@ -1,16 +1,14 @@
 {
- 
   "scripts": {
-    "start": "ts-node src/index.ts",
+    "start": "nodemon src/index.ts",
     "build": "tsc",
     "serve": "node dist/index.js"
   },
   "dependencies": {
-   
+    "dotenv": "^16.4.7",
     "ts-node": "^10.9.2"
-  },  
-   "type": "commonjs",
-
+  },
+  "type": "commonjs",
   "devDependencies": {
     "@hapi/hapi": "^21.3.12",
     "@types/hapi": "^18.0.14",
