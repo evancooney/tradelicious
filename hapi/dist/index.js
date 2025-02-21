@@ -1,0 +1,57 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const hapi_1 = __importDefault(require("@hapi/hapi"));
+const spotify_web_api_node_1 = __importDefault(require("spotify-web-api-node"));
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
+var spotifyApi = new spotify_web_api_node_1.default({
+    clientId: process.env.SPOTIFY_CLIENT_ID,
+    clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+});
+const start = async function () {
+    const server = hapi_1.default.server({
+        port: 4000,
+        host: '0.0.0.0'
+    });
+    spotifyApi.clientCredentialsGrant().then(function (data) {
+        console.log('The access token expires in ' + data.body['expires_in']);
+        console.log('The access token is ' + data.body['access_token']);
+        // Save the access token so that it's used in future calls
+        spotifyApi.setAccessToken(data.body['access_token']);
+    }, function (err) {
+        console.log('Something went wrong when retrieving an access token', err.message);
+    });
+    server.route({
+        method: 'GET',
+        path: '/',
+        handler: (request, h) => {
+            return 'Hello, world!';
+        }
+    });
+    server.route({
+        method: 'GET',
+        path: '/spotify',
+        handler: async (request, h) => {
+            const res = await spotifyApi.getArtistAlbums('43ZHCT0cAZBISjO8DG9PnE'); //.then(
+            // function(data) {
+            //   console.log('Artist albums', data.body);
+            //   return data.body;
+            // },
+            // function(err) {
+            //   console.error(err);
+            // }
+            //);
+            console.log(res.body);
+            return res.body;
+        }
+    });
+    await server.start();
+    console.log(`Server started on: ${server.info.uri}`);
+};
+start().catch(err => {
+    console.error(err);
+    process.exit(1);
+});
