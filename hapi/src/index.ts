@@ -40,20 +40,18 @@ const start = async function(): Promise<void> {
 
     server.route({
         method: 'GET',
+        path: '/apple',
+        handler: (request, h) => {
+            return 'Hello, apple!';
+        }
+    });
+
+    server.route({
+        method: 'GET',
         path: '/spotify',
         handler:  async (request, h) => {
             
-            const res = await spotifyApi.getArtistAlbums('43ZHCT0cAZBISjO8DG9PnE')//.then(
-                // function(data) {
-                //   console.log('Artist albums', data.body);
-                //   return data.body;
-                // },
-                // function(err) {
-                //   console.error(err);
-                // }
-
-                
-              //);
+            const res = await spotifyApi.getArtistAlbums('43ZHCT0cAZBISjO8DG9PnE');
 
              console.log(res.body) 
              return res.body;
