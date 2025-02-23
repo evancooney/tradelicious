@@ -34,7 +34,7 @@ app.get('/express/spotify', async (req, res) => {
 
 
   
-    const rez = await spotifyApi.getArtistAlbums('43ZHCT0cAZBISjO8DG9PnE');
+    const rez = await spotifyApi.getTrack('0RiRZpuVRbi7oqRdSMwhQY?si=dbba7f746f0141f9');
      console.log(rez.body) 
      res.json(rez.body);
 
