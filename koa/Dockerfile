@@ -11,10 +11,12 @@ COPY package*.json ./
 RUN yarn install
 
 RUN yarn add newrelic
-RUN { echo 'import "newrelic";'  ; cat src/index.ts ; } > temp  && mv temp  src/index.ts
+
 
 # Bundle app source
 COPY . .
+
+RUN { echo 'import "newrelic";'  ; cat src/index.ts ; } > temp  && mv temp  src/index.ts
 
 RUN yarn run build
 

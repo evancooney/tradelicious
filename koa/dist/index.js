@@ -11,8 +11,8 @@ const koa_logger_1 = __importDefault(require("koa-logger"));
 require("dotenv/config");
 const app = new koa_1.default();
 const router = new router_1.default();
-router.get('/', (ctx, next) => {
-    ctx.body = 'Hi koa';
+router.get('/koa', (ctx, next) => {
+    ctx.body = 'token town';
 });
 app.use((0, koa_logger_1.default)());
 app.use(router.routes());
