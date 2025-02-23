@@ -9,8 +9,8 @@ const app = new Koa();
 const router = new Router();
 
 
-  router.get('/', (ctx, next) => {
-    ctx.body = 'Hi koa';
+  router.get('/koa', (ctx, next) => {
+    ctx.body = 'token town';
   });
 
 app.use(logger())

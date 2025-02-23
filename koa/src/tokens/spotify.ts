@@ -27,7 +27,7 @@ router.use(async (ctx, next) => {
   await next();
 });
 
-router.get('/spotify', (ctx, next) => {
+router.get('/koa/spotify', (ctx, next) => {
   ctx.body = ctx.state.token
 });
 
