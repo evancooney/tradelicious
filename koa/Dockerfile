@@ -10,13 +10,16 @@ COPY package*.json ./
 # Install app dependencies
 RUN yarn install
 
+RUN yarn add newrelic
+RUN { echo 'import "newrelic";'  ; cat src/index.ts ; } > temp  && mv temp  src/index.ts
+
 # Bundle app source
 COPY . .
 
 RUN yarn run build
 
 # Start the server using the production build
-CMD [ "node", "dist/index.js" ]
+ENTRYPOINT NODE_ENV=production node -r newrelic dist/index.js
 
 # Exposing server port
 EXPOSE 5555
