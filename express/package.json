@@ -3,11 +3,13 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon src/index.js"
+    "start": "nodemon src/index.js",
+    "prod": "node -r newrelic src/index.js"
   },
   "dependencies": {
     "dotenv": "^16.4.7",
     "express": "^4.16.1",
+    "newrelic": "^12.14.0",
     "spotify-web-api-node": "^5.0.2"
   },
   "devDependencies": {
