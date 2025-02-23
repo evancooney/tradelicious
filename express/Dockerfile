@@ -9,4 +9,6 @@ COPY . .
 
 EXPOSE 3000
 
-CMD ["node", "-r newrelic src/index.js"]
+#CMD ["node", "-r newrelic src/index.js"]
+
+ENTRYPOINT node -r newrelic src/index.js
