@@ -11,4 +11,4 @@ EXPOSE 3000
 
 #CMD ["node", "-r newrelic src/index.js"]
 
-ENTRYPOINT node -r newrelic src/index.js
+ENTRYPOINT NODE_ENV=production node -r newrelic src/index.js
