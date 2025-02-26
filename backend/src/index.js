@@ -1,10 +1,11 @@
-require('newrelic');
+
 const express = require('express');
 const SpotifyWebApi = require('spotify-web-api-node');
 const app = express();
-const port = 3000;
+const port = 3333;
 const dotenv = require('dotenv');
 dotenv.config();
+
 
 console.log('JAR JAR JAR token', process.env.SPOTIFY_CLIENT_ID,)
 
@@ -24,14 +25,14 @@ then(function(result) {
     console.log(err);
 });
 
+app.post()
 
 
-
-app.get('/express', (req, res) => {
+app.get('/backend', (req, res) => {
   res.send('Hello, Docker!');
 });
 
-app.get('/express/spotify', async (req, res) => {
+app.get('/backend/spotify', async (req, res) => {
 
 
   

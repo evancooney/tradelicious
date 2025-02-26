@@ -7,8 +7,6 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 3000
-
-#CMD ["node", "-r newrelic src/index.js"]
+EXPOSE 3333
 
 ENTRYPOINT NODE_ENV=production node -r newrelic src/index.js

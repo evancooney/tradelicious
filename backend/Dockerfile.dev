@@ -1,0 +1,14 @@
+FROM node:18
+    
+WORKDIR /app
+
+COPY package*.json .
+RUN yarn install
+RUN yarn global add nodemon
+
+COPY . .
+
+EXPOSE 3333
+
+
+ENTRYPOINT nodemon /app/src/index.js

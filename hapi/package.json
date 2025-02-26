@@ -2,10 +2,11 @@
   "scripts": {
     "start": "nodemon src/index.ts",
     "build": "tsc",
-    "serve": "node dist/index.js"
+    "serve": "node -r newrelic dist/index.js"
   },
   "dependencies": {
     "dotenv": "^16.4.7",
+    "newrelic": "^12.14.0",
     "spotify-web-api-node": "^5.0.2",
     "ts-node": "^10.9.2"
   },
