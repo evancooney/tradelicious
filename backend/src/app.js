@@ -3,6 +3,7 @@ import { createClient } from 'redis';
 import appleRoutes from './routes/appleRoutes.js';
 import spotifyRoutes from './routes/spotifyRoutes.js';
 import analyzeRoutes from './routes/analyzeRoutes.js';
+import collectionsRoutes from "./routes/collectionRoutes.js";
 import cors from 'cors';
 import 'dotenv/config';
 
@@ -38,6 +39,7 @@ app.use(express.json());
 app.use('/apple', appleRoutes);
 app.use('/spotify', spotifyRoutes);
 app.use('/analyze', analyzeRoutes);
+app.use('/collections', collectionsRoutes);
 
 // Simple route
 app.get('/', (req, res) => {
