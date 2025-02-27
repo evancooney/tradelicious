@@ -1,20 +1,20 @@
 import axios from 'axios';
-import { generateAppleToken } from '../middleware/apple.js';
-import { getSpotifyToken } from '../middleware/spotify.js';
+import tokenService  from '../services/tokenService.js';
+import { standardizeSong } from './standardizeSong.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-const APPLE_MUSIC_API_BASE = 'https://api.music.apple.com/v1/catalog/us';
-const APPLE_MUSIC_TOKEN = process.env.APPLE_MUSIC_TOKEN;
+const SPOTIFY_API_BASE = 'https://api.spotify.com/v1';
+const SPOTIFY_TOKEN = process.env.SPOTIFY_TOKEN;
 
 
 
 const findTrackByISRC = async (isrc) => {
     try {
+        const token = await tokenService.getAccessToken('appleMusic');
         const response = await axios.get(`https://api.music.apple.com/v1/catalog/us/songs?filter[isrc]=${isrc}`, {
-            headers: { Authorization: `Bearer eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkxUQlNZQVE4NzIifQ.eyJpYXQiOjE3NDA1NjIzMzIsImV4cCI6MTc1NjI4NzEzMiwiaXNzIjoiWTNHN1QzNDNZOCJ9.7l5GVFlFM_A05IeuX-6v9S2DfDizffTaq_Mbsa3zFztDHXF9bPspSOS2-uOcK9McSVHhyMMMru9yTiyQVWZYew` }
-        });
+            headers: { Authorization: `Bearer ${token}` }});
 
         const appleTrack = response.data.data[0];
         return appleTrack ? `https://music.apple.com/us/song/${appleTrack.id}` : null;
@@ -25,11 +25,17 @@ const findTrackByISRC = async (isrc) => {
 };
 
 const findTrackById = async (spotifyTrackId) => {
+    
     try {
+        const spotifyToken = await tokenService.getAccessToken('spotify');
+
         // Use Spotify API to get song details
         const response = await axios.get(`https://api.spotify.com/v1/tracks/${spotifyTrackId}`, {
-            headers: { Authorization: `Bearer BQCbBE-0f3CyDBaTU6OLvFBJ9y7PqVtk42faXtBTTWg8X3qYKEHGyYLnc8ieJZ3DNyjtXf_AOOCUICsSzBPqYiiOApz3qKU5iyC88R4CkzmKjW3cLHPfTA9Hq9fqAsjEIotUSk-oaGQ`}
+            headers: { Authorization: `Bearer ${spotifyToken}`}
         });
+
+        
+        
 
         const songName = response.data.name;
         const artistName = response.data.artists[0]?.name;
@@ -37,16 +43,24 @@ const findTrackById = async (spotifyTrackId) => {
         if (!songName || !artistName) {
             return null;
         }
+        const cleanedSpotifyTrack = standardizeSong(response.data, "spotify");
+        console.log(cleanedSpotifyTrack)
 
         // Search Apple Music for the song and artist
         const appleSearchUrl = `https://api.music.apple.com/v1/catalog/us/search?term=${encodeURIComponent(songName + ' ' + artistName)}&types=songs&limit=1`;
-
+        const appleToken = await tokenService.getAccessToken('appleMusic');
         const searchResponse = await axios.get(appleSearchUrl, {
-            headers: { Authorization: `Bearer eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkxUQlNZQVE4NzIifQ.eyJpYXQiOjE3NDA1NjIzMzIsImV4cCI6MTc1NjI4NzEzMiwiaXNzIjoiWTNHN1QzNDNZOCJ9.7l5GVFlFM_A05IeuX-6v9S2DfDizffTaq_Mbsa3zFztDHXF9bPspSOS2-uOcK9McSVHhyMMMru9yTiyQVWZYew` }
+            headers: { Authorization: `Bearer ${appleToken}` }
         });
 
         const appleTrack = searchResponse.data.results.songs.data[0];
-        return appleTrack ? `https://music.apple.com/us/song/${appleTrack.id}` : null;
+        const cleanedAppleTrack = standardizeSong(appleTrack, "appleMusic");
+        console.log(cleanedAppleTrack);
+        const results = [];
+        results.push(cleanedAppleTrack);
+        results.push(cleanedSpotifyTrack);
+        return results
+        // return appleTrack ? `https://music.apple.com/us/song/${appleTrack.id}` : null;
     } catch (error) {
         console.error('Error fetching track:', error);
         return null;
@@ -60,9 +74,10 @@ const findTrackById = async (spotifyTrackId) => {
  */
 const findTrackByLink = async (spotifyTrackId) => {
     try {
+        const token = await tokenService.getAccessToken('spotify')
         const spotifyApiUrl = `https://api.spotify.com/v1/tracks/${spotifyTrackId}`;
         const spotifyResponse = await axios.get(spotifyApiUrl, {
-            headers: { Authorization: `Bearer BQCbBE-0f3CyDBaTU6OLvFBJ9y7PqVtk42faXtBTTWg8X3qYKEHGyYLnc8ieJZ3DNyjtXf_AOOCUICsSzBPqYiiOApz3qKU5iyC88R4CkzmKjW3cLHPfTA9Hq9fqAsjEIotUSk-oaGQ` }
+            headers: { Authorization: `Bearer ${token}` }
         });
 
         const isrc = spotifyResponse.data.external_ids.isrc;
@@ -76,10 +91,10 @@ const findTrackByLink = async (spotifyTrackId) => {
 };
 
 
-const appleService = {
+const spotifyService = {
     findTrackByISRC,
     findTrackById,
     findTrackByLink
 }
 
-export default appleService;
+export default spotifyService;

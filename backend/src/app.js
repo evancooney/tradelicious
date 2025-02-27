@@ -1,19 +1,34 @@
 import express from 'express';
-import redis from 'redis';
+import { createClient } from 'redis';
 import appleRoutes from './routes/appleRoutes.js';
 import spotifyRoutes from './routes/spotifyRoutes.js';
 import analyzeRoutes from './routes/analyzeRoutes.js';
 import cors from 'cors';
+import 'dotenv/config';
 
 
 const app = express();
-const port = 3000;
+const port = 3333;
 
 app.use(cors());
 
+// see the cache
+
 // Setup Redis client
-const redisClient = redis.createClient();
-redisClient.connect().catch(console.error);
+const redisClient = await createClient({
+    url: process.env.REDIS_CONN
+})
+
+  redisClient.on('connect', () => {
+    console.log('Connected to Redis');
+  });
+
+  redisClient.on('error', (err) => {
+    console.error('Redis connection error:', err);
+  });
+
+  await redisClient.connect();
+
 
 // Middleware to parse JSON requests
 app.use(express.json());

@@ -1,18 +1,44 @@
 {
-  "name": "backend",
-  "version": "0.0.0",
-  "private": true,
-  "scripts": {
-    "start": "nodemon src/index.js",
-    "prod": "node -r newrelic src/index.js"
+  "name": "music-link-converter",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "directories": {
+    "test": "tests"
   },
+  "scripts": {
+    "start": "node ./srcindex.js",
+    "test": "NODE_OPTIONS='--experimental-vm-modules' NODE_ENV=test jest --verbose "
+  },
+  "type": "module",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
   "dependencies": {
+    "axios": "^1.7.9",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.7",
-    "express": "^4.16.1",
-    "newrelic": "^12.14.0",
-    "spotify-web-api-node": "^5.0.2"
+    "express": "^4.21.2",
+    "install": "^0.13.0",
+    "jsonwebtoken": "^9.0.2",
+    "node-cache": "^5.1.2",
+    "node-fetch": "^3.3.2",
+    "redis": "^4.7.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.9"
+    "@babel/core": "^7.26.9",
+    "@babel/preset-env": "^7.26.9",
+    "@babel/preset-typescript": "^7.26.0",
+    "@babel/register": "^7.25.9",
+    "@types/cors": "^2.8.17",
+    "babel-jest": "^29.7.0",
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0"
+  },
+  "jest": {
+    "transform": {},
+    "setupFiles": [
+      "./src/tests/setupTests.js"
+    ]
   }
 }

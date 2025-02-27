@@ -1,6 +1,7 @@
 import Router from '@koa/router';
 // @ts-ignore 
 import jwt from 'apple-music-jwt';
+import 'dotenv/config';
 
 const router = new Router();
 

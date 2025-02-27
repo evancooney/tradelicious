@@ -1,21 +1,26 @@
 import axios from 'axios';
-import { generateAppleToken } from '../middleware/apple.js';
-import { getSpotifyToken } from '../middleware/spotify.js';
+
+
+import tokenService  from '../services/tokenService.js'
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-const SPOTIFY_API_BASE = 'https://api.spotify.com/v1';
-const SPOTIFY_TOKEN = process.env.SPOTIFY_TOKEN;
+
+
+const APPLE_MUSIC_API_BASE = 'https://api.music.apple.com/v1/catalog/us';
+const APPLE_MUSIC_TOKEN = process.env.APPLE_MUSIC_TOKEN;
+
 
 const findTrackByISRC = async (isrc) => {
     try {
+        const token = await tokenService.getAccessToken('spotify');
         const response = await axios.get(`https://api.spotify.com/v1/search?q=isrc:${isrc}&type=track&limit=1`, {
-            headers: { Authorization: `Bearer BQCbBE-0f3CyDBaTU6OLvFBJ9y7PqVtk42faXtBTTWg8X3qYKEHGyYLnc8ieJZ3DNyjtXf_AOOCUICsSzBPqYiiOApz3qKU5iyC88R4CkzmKjW3cLHPfTA9Hq9fqAsjEIotUSk-oaGQ` }
+            headers: { Authorization: `Bearer ${token}` }
         });
 
         const spotifyTrack = response.data.tracks.items[0];
-        return spotifyTrack ? `https://open.spotify.com/track/${spotifyTrack.id}` : null;
+        return spotifyTrack ? `${SPOTIFY_API_BASE}/tracks/${spotifyTrack.id}` : null;
     } catch (error) {
         console.error('Error fetching track:', error);
         return null;
@@ -25,12 +30,15 @@ const findTrackByISRC = async (isrc) => {
 const findTrackById = async (appleTrackId) => {
     try {
         // Use Apple Music API to get song details
+        const appletoken = await tokenService.getAccessToken('appleMusic');
         const response = await axios.get(`https://api.music.apple.com/v1/catalog/us/songs/${appleTrackId}`, {
-            headers: { Authorization:`Bearer https://open.spotify.com/track/1ZBqJilDGBVYktvlCEo9jC?si=0f5e57a452214749` }
+            headers: { Authorization: `Bearer ${appletoken}` }
         });
 
         const songName = response.data.data[0]?.attributes?.name;
         const artistName = response.data.data[0]?.attributes?.artistName;
+
+        console.log('pple music raw', response.data)
 
         if (!songName || !artistName) {
             return null;
@@ -38,13 +46,13 @@ const findTrackById = async (appleTrackId) => {
 
         // Search Spotify for the song and artist
         const spotifySearchUrl = `https://api.spotify.com/v1/search?q=track:${encodeURIComponent(songName)}+artist:${encodeURIComponent(artistName)}&type=track&limit=1`;
-
+        const spotifyToken = await tokenService.getAccessToken('spotify');
         const searchResponse = await axios.get(spotifySearchUrl, {
-            headers: { Authorization: `Bearer BQCbBE-0f3CyDBaTU6OLvFBJ9y7PqVtk42faXtBTTWg8X3qYKEHGyYLnc8ieJZ3DNyjtXf_AOOCUICsSzBPqYiiOApz3qKU5iyC88R4CkzmKjW3cLHPfTA9Hq9fqAsjEIotUSk-oaGQ` }
+            headers: { Authorization: `Bearer ${spotifyToken}` }
         });
 
         const spotifyTrack = searchResponse.data.tracks.items[0];
-        return spotifyTrack ? `https://open.spotify.com/track/${spotifyTrack.id}` : null;
+        return spotifyTrack ? `{${SPOTIFY_API_BASE}/tracks/${spotifyTrack.id}` : null;
     } catch (error) {
         console.error('Error fetching track:', error);
         return null;
@@ -58,9 +66,10 @@ const findTrackById = async (appleTrackId) => {
  */
 const findTrackByLink = async (appleTrackId) => {
     try {
+        const appleToken = await tokenService.getAccessToken('appleMusic');
         const appleApiUrl = `https://api.music.apple.com/v1/catalog/us/songs/${appleTrackId}`;
         const appleResponse = await axios.get(appleApiUrl, {
-            headers: { Authorization: `Bearer https://open.spotify.com/track/1ZBqJilDGBVYktvlCEo9jC?si=0f5e57a452214749` }
+            headers: { Authorization: `Bearer ${appleToken}` }
         });
 
         const isrc = appleResponse.data.data[0]?.attributes?.isrc;

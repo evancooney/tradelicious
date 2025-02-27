@@ -3,7 +3,9 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile.dev
-    container_name: backend  
+    container_name: backend 
+    depends_on:
+      - redis 
     environment:
       PORT: 3333
     ports:
@@ -30,8 +32,24 @@ services:
     container_name: frontend
     environment:
       PORT: 5173
+
     ports:
       - '5173:5173'
     restart: "no"
     volumes:
       - ./frontend/src:/app/src
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    restart: always
+    environment:
+      PORT: 6379
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: ["redis-server", "--save", "60", "1", "--loglevel", "warning"]
+
+volumes:
+  redis_data:
