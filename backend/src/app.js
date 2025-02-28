@@ -40,8 +40,8 @@ const pathPrefix = process.env.PATH_PREFIX;
 // Register Routes
 app.use(`${pathPrefix}/apple`, appleRoutes);
 app.use(`${pathPrefix}/spotify`, spotifyRoutes);
-app.use(`${pathPrefix}analyze`, analyzeRoutes);
-app.use(`${pathPrefix}collections`, collectionsRoutes);
+app.use(`${pathPrefix}/analyze`, analyzeRoutes);
+app.use(`${pathPrefix}/collections`, collectionsRoutes);
 
 // Simple route
 app.get('/', (req, res) => {

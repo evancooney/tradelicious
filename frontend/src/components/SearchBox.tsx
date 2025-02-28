@@ -39,21 +39,22 @@ const GoogleSearchBox: React.FC<GoogleSearchBoxProps> = ({ onSearch, query, setQ
           display: "flex",
           alignItems: "center",
           width: "100%",
-          maxWidth: 600,
-          p: 1,
+          maxWidth: 700,
+          p: 3,
           borderRadius: "50px",
-          boxShadow: 3,
+          
+          boxShadow: 2,
         }}
       >
         <TextField
           fullWidth
           variant="standard"
-          placeholder="Enter a link for Spotify or Apple Music and we'll convert it"
-          InputProps={{ disableUnderline: true }}
+          placeholder="Paste a Spotify or Apple Music link "
+          InputProps={{ disableUnderline: true, style: {fontSize: 22}  }}
           value={query}
           onChange={handleInputChange}
           onClick={handleInputClick}
-          sx={{ ml: 2, flex: 1 }}
+          sx={{ ml: 2, flex: 1, }}
         />
         <Button type="submit" sx={{ borderRadius: "50px", minWidth: "50px" }}>
           <SearchIcon />
