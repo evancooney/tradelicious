@@ -11,4 +11,5 @@ COPY . .
 RUN { echo 'import "newrelic";'  ; cat src/index.js ; } > temp  && mv temp  src/index.js
 EXPOSE 3333
 
-ENTRYPOINT NODE_ENV=production node -r newrelic src/index.js
+#ENTRYPOINT NODE_ENV=production node -r newrelic src/index.js
+CMD ["yarn", "prod"]
