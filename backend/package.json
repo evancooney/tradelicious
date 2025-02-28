@@ -7,6 +7,7 @@
   },
   "scripts": {
     "start": "node ./srcindex.js",
+    
     "test": "NODE_OPTIONS='--experimental-vm-modules' NODE_ENV=test jest --verbose "
   },
   "type": "module",

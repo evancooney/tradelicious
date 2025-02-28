@@ -34,12 +34,14 @@ const redisClient = await createClient({
 // Middleware to parse JSON requests
 app.use(express.json());
 
+const pathPrefix = process.env.PATH_PREFIX;
+
 
 // Register Routes
-app.use('/apple', appleRoutes);
-app.use('/spotify', spotifyRoutes);
-app.use('/analyze', analyzeRoutes);
-app.use('/collections', collectionsRoutes);
+app.use(`${pathPrefix}/apple`, appleRoutes);
+app.use(`${pathPrefix}/spotify`, spotifyRoutes);
+app.use(`${pathPrefix}analyze`, analyzeRoutes);
+app.use(`${pathPrefix}collections`, collectionsRoutes);
 
 // Simple route
 app.get('/', (req, res) => {

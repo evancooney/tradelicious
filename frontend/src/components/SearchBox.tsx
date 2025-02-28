@@ -1,13 +1,25 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, FormEvent } from "react";
 import { Box, TextField, Button, Paper, Typography } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
-const GoogleSearchBox = ({ onSearch, query, setQuery }) => {
-  
+interface GoogleSearchBoxProps {
+  onSearch: (query: string) => void;
+  query: string;
+  setQuery: (query: string) => void;
+}
 
-  const handleSubmit = (e) => {
+const GoogleSearchBox: React.FC<GoogleSearchBoxProps> = ({ onSearch, query, setQuery }) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     onSearch(query);
+  };
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value);
+  };
+
+  const handleInputClick = () => {
+    setQuery('');
   };
 
   return (
@@ -17,7 +29,6 @@ const GoogleSearchBox = ({ onSearch, query, setQuery }) => {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-     
         bgcolor: "background.default",
       }}
     >
@@ -40,17 +51,16 @@ const GoogleSearchBox = ({ onSearch, query, setQuery }) => {
           placeholder="Enter a link for Spotify or Apple Music and we'll convert it"
           InputProps={{ disableUnderline: true }}
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          onClick={(e) => setQuery('')}
+          onChange={handleInputChange}
+          onClick={handleInputClick}
           sx={{ ml: 2, flex: 1 }}
         />
         <Button type="submit" sx={{ borderRadius: "50px", minWidth: "50px" }}>
           <SearchIcon />
         </Button>
-        
       </Paper>
       <Typography variant="body2" color="textSecondary" sx={{ mt: 2, color: '#AAA', fontSize: 14 }}>
-       
+        {/* Add any additional text here */}
       </Typography>
     </Box>
   );

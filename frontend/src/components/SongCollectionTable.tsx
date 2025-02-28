@@ -1,21 +1,41 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box, Typography, IconButton, TextField, Card, CardContent } from "@mui/material";
 import { FaSpotify, FaApple } from "react-icons/fa";
 import { ContentCopy } from "@mui/icons-material";
 
-const SongCollectionTable = ({ songs, shareLink }) => {
-  const getSourceIcon = (source, link) => {
+interface Song {
+  source: string;
+  sourceLink: string;
+  title: string;
+  artist: string;
+  artistLink?: string;
+  album: string;
+  albumLink?: string;
+  durationMs: number;
+  releaseDate: string;
+  coverArt: string;
+}
+
+interface SongCollectionTableProps {
+  songs: Song[];
+  shareLink: string;
+}
+
+
+const SongCollectionTable: React.FC<SongCollectionTableProps> = ({ songs, shareLink }) => {
+  const getSourceIcon = (source:string, link:string) => {
     let icon;
     switch (source) {
       case "Spotify":
-        icon = <FaSpotify color="#1DB954" size={50} />;
+        icon = <FaSpotify style={{ color: "#1DB954", fontSize: 50 }} />;
         break;
       case "Apple Music":
-        icon = <FaApple color="#FA243C" size={50} />;
+        icon = <FaApple style={{ color: "#FA243C", fontSize: 50 }} />;
         break;
       default:
         return <Box width={50} height={50} bgcolor="black" />;
     }
+    
     return link ? <a href={link} target="_blank" rel="noopener noreferrer">{icon}</a> : icon;
   };
 
@@ -30,6 +50,7 @@ const SongCollectionTable = ({ songs, shareLink }) => {
         <Box sx={{ mt: 2, p: 2, margin: "auto", bgcolor: "#f0f0f0", borderRadius: 2, display: "flex", alignItems: "center", position: "relative" }}>
           <TextField fullWidth label="Shareable link" value={shareLink} variant="outlined" InputProps={{ readOnly: true }} />
           <IconButton onClick={copyToClipboard} sx={{ position: "absolute", right: 10 }}>
+
             <ContentCopy />
           </IconButton>
         </Box>
@@ -73,7 +94,7 @@ const SongCollectionTable = ({ songs, shareLink }) => {
                 <TableCell>{(song.durationMs / 1000).toFixed(2)} sec</TableCell>
                 <TableCell>{song.releaseDate}</TableCell>
                 <TableCell>
-                  <img src={song.coverArt} alt={song.title} width={50} height={50} style={{ borderRadius: "5px", display: "block" }} onError={(e) => (e.target.style.display = "none")} />
+                  <img src={song.coverArt} alt={song.title} width={50} height={50} style={{ borderRadius: "5px", display: "block" }} onError={(e) => (e.currentTarget.style.display = "none")} />
                 </TableCell>
               </TableRow>
             ))}
