@@ -56,7 +56,7 @@ const GoogleSearchBox: React.FC<GoogleSearchBoxProps> = ({ onSearch, query, setQ
           onPaste={(e) => {
             console.log('this is the query', query);
             console.log(e.clipboardData.getData('text/plain'));
-            onSearch(https://music.apple.com/us/album/delilah-pull-me-out-of-this/1640463893?i=1640463908);
+            onSearch(e.clipboardData.getData('text/plain'));
           }}
           onClick={handleInputClick}
           sx={{ ml: 2, flex: 1, }}
