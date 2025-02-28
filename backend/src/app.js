@@ -46,10 +46,10 @@ app.get(`/backend`, (req, res) => {
 });
 
 // Register Routes
-app.use(`${pathPrefix}/apple`, appleRoutes);
-app.use(`${pathPrefix}/spotify`, spotifyRoutes);
-app.use(`${pathPrefix}/analyze`, analyzeRoutes);
-app.use(`${pathPrefix}/collections`, collectionsRoutes);
+app.use(`/backend/apple`, appleRoutes);
+app.use(`/backend/spotify`, spotifyRoutes);
+app.use(`/backend/analyze`, analyzeRoutes);
+app.use(`/backend/collections`, collectionsRoutes);
 
 
 
