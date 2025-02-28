@@ -71,7 +71,7 @@ const findTrackById = async (tidalTrackId) => {
         console.log("Apple Music Track:", cleanedAppleTrack);
 
         const res = {
-            shareLink: `${process.env.HOST}/collections/${isrc}`,
+            shareLink: `${process.env.SHARE_LINK_BASE}/collections/${isrc}`,
             songs: [cleanedTidalTrack]
         };
 
