@@ -36,6 +36,10 @@ app.use(express.json());
 
 const pathPrefix = process.env.PATH_PREFIX;
 
+// Simple route
+app.get('`${pathPrefix}/`', (req, res) => {
+  res.send('Hello, World!');
+});
 
 // Register Routes
 app.use(`${pathPrefix}/apple`, appleRoutes);
@@ -43,10 +47,7 @@ app.use(`${pathPrefix}/spotify`, spotifyRoutes);
 app.use(`${pathPrefix}/analyze`, analyzeRoutes);
 app.use(`${pathPrefix}/collections`, collectionsRoutes);
 
-// Simple route
-app.get('/', (req, res) => {
-    res.send('Hello, World!');
-});
+
 
 
 
