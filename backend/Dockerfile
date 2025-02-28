@@ -3,7 +3,9 @@ FROM node:18
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm install
+RUN yarn install
+
+RUN yarn add newrelic
 
 COPY . .
 RUN { echo 'import "newrelic";'  ; cat src/index.ts ; } > temp  && mv temp  src/index.js
