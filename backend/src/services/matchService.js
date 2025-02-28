@@ -51,7 +51,7 @@ const matchSongsAcrossServices = async (query) => {
 
   const key = uuidv4()
   const res = {
-    shareLink: `${process.env.HOST}/collections/${key}`,
+    shareLink: `${process.env.SHARE_LINK_BASE}/collections/${key}`,
     songs: rankedMatches
   }
 
