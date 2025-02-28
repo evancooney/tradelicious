@@ -63,7 +63,7 @@ const findTrackById = async (appleTrackId) => {
 
         const isrc = cleanedSpotifyTrack.isrc;
         const res = {
-            shareLink: `${process.env.HOST}/collections/${isrc}`,
+            shareLink: `${process.env.SHARE_LINK_BASE}/collections/${isrc}`,
             songs: []
         }
         
