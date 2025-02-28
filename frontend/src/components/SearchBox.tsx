@@ -54,9 +54,9 @@ const GoogleSearchBox: React.FC<GoogleSearchBoxProps> = ({ onSearch, query, setQ
           value={query}
           onChange={handleInputChange}
           onPaste={(e) => {
-            consol.log('this is the query', query);
+            console.log('this is the query', query);
             console.log(e.clipboardData.getData('text/plain'));
-          }
+          }}
           onClick={handleInputClick}
           sx={{ ml: 2, flex: 1, }}
         />
