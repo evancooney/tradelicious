@@ -37,8 +37,12 @@ app.use(express.json());
 const pathPrefix = process.env.PATH_PREFIX;
 
 // Simple route
-app.get('`${pathPrefix}/`', (req, res) => {
+app.get(`/`, (req, res) => {
   res.send('Hello, World!');
+});
+
+app.get(`/backend`, (req, res) => {
+  res.send('lil dojo, World!');
 });
 
 // Register Routes
