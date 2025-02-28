@@ -1,11 +1,20 @@
 import appleService from '../services/appleService.js';
 import spotifyService from '../services/spotifyService.js';
+import tidalService from '../services/tidalService.js';
 import matchService from './matchService.js';
 
 const extractTrackId = (url) => {
     const match = url.match(/[?&]i=(\d+)/);
     return match ? match[1] : null;
   };
+
+  const extractTidalTrackId = (url) => {
+    const match = url.match(/\/(\d+)(?:\?|$)/);
+    return match ? match[1] : null;
+};
+
+
+
 
 const analyzeTrack = async (url) => {
     if (!url) {
@@ -24,8 +33,14 @@ const analyzeTrack = async (url) => {
         service = appleService;
         platform = 'AppleMusic';
         lookupFunction = service.findTrackById;
-    } else if(!url.startsWith('http')) {
+    } else if (url.includes('tidal.com/browse/trac')) {
+        trackId = extractTidalTrackId(url) // Extract Apple Music track ID
 
+        service = tidalService;
+        platform = 'Tidal';
+        lookupFunction = service.findTrackById;
+    } else if(!url.startsWith('http')) {
+        console.log('got here?', url)
         const results = await matchService.matchSongsAcrossServices(url)
         return results;
     

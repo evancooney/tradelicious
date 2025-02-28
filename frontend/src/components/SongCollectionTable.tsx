@@ -32,6 +32,9 @@ const SongCollectionTable: React.FC<SongCollectionTableProps> = ({ songs, shareL
       case "Apple Music":
         icon = <FaApple style={{ color: "#FA243C", fontSize: 50 }} />;
         break;
+      case "Tidal":
+        icon = <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA5UlEQVR4nO2XQQqDMBRE5wiCvf9dslLoor1RCyUWlKpJOvDS8h/85TwMQvJHCoIgCIIgCChGSXOesTGf8hD5F4Okq6RHnruki34n/1FSK6Pzh5JSGZ0vkpzJ6HyVZE9G55skWxmdf5MaJMss1zOVT66DTF9+yOQ8yND4a2/5oaLzK2plWwmdX1Eq25PQ+SrZmYTOF8lKJXT+UFYrofP2NXzOVyy2xvfQZ7rA0idoLH2CxtInaCx9gsbSJ2hsfYImudZwmr85yODsEzTWPkFj7RM01j5BY+0TNNY+QdNNnwiCIFBXPAEG6yuuxwFzHAAAAABJRU5ErkJggg==" alt="tidal" />
+        break;
       default:
         return <Box width={50} height={50} bgcolor="black" />;
     }

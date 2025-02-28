@@ -16,15 +16,18 @@ const getAccessToken = async (provider) => {
     tokenEndpoint = process.env.SPOTIFY_TOKEN_ENDPOINT;
   } else if (provider === "appleMusic") {
     tokenEndpoint = process.env.APPLE_MUSIC_TOKEN_ENDPOINT;
+  } else if (provider === "tidal") {
+    tokenEndpoint = process.env.TIDAL_TOKEN_ENDPOINT;
   } else {
     throw new Error("Unsupported provider");
   }
 
   const tokenResponse = await axios.get(tokenEndpoint);
-  const expiresIn = provider === "spotify" ? 240 : 86400; // 4 minutes for Spotify, 24 hours for Apple Music
+ 
+  const expiresIn = provider === "spotify" || provider === "tidal" ? 240 : 86400; // 4 minutes for Spotify, 24 hours for Apple Music
   
   cache.set(cacheKey, tokenResponse.data, expiresIn);
-
+  console.log(tokenResponse.data)
   return tokenResponse.data;
 };
 

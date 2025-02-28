@@ -14,7 +14,7 @@ router.get('/koa/spotify', async (ctx, next) => {
   //ctx.body = ctx.state.token
   await spotifyApi.clientCredentialsGrant().
     then(function (result: any) {
-     
+     console.log(result)
       ctx.body = result.body.access_token;
       return;
       

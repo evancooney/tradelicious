@@ -1,6 +1,8 @@
 import  tokenService  from "./tokenService.js";
 import { standardizeSong } from "./standardizeSong.js";
 import axios from "axios";
+import { saveCollection } from './redisService.js';
+import { v4 as uuidv4 } from 'uuid';
 
 const searchSpotify = async (query) => {
   const token = await tokenService.getAccessToken("spotify");
@@ -43,7 +45,20 @@ const matchSongsAcrossServices = async (query) => {
   const appleResults = await searchAppleMusic(query);
   const allResults = [...spotifyResults, ...appleResults];
 
-  return rankMatches(query, allResults);
+  const rankedMatches = rankMatches(query, allResults);
+  
+  console.log(rankedMatches)
+
+  const key = uuidv4()
+  const res = {
+    shareLink: `${process.env.HOST}/collections/${key}`,
+    songs: rankedMatches
+  }
+
+
+  await saveCollection(key,res);
+
+  return res
 };
 
 
