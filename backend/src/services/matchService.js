@@ -47,24 +47,24 @@ const matchSongsAcrossServices = async (query) => {
 
   const rankedMatches = rankMatches(query, allResults);
   
-  console.log(rankedMatches)
+  console.log(rankedMatches);
 
-  const key = uuidv4()
+  const key = uuidv4();
   const res = {
     shareLink: `${process.env.SHARE_LINK_BASE}/collections/${key}`,
     songs: rankedMatches
-  }
+  };
 
 
   await saveCollection(key,res);
 
-  return res
+  return res;
 };
 
 
 
 const matchService = {
     matchSongsAcrossServices
-}
+};
 
 export default matchService;

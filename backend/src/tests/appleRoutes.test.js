@@ -1,9 +1,9 @@
 import request from 'supertest';
 import app from '../app.js';
 import { jest } from '@jest/globals';
-import appleService from '../services/appleService.js'
+import appleService from '../services/appleService.js';
 
-jest.clearAllMocks()
+jest.clearAllMocks();
 
 const spy = jest.spyOn(appleService, 'findTrackByISRC').mockResolvedValue('https://music.apple.com/us/song/1234567890');
 

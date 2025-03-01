@@ -28,20 +28,20 @@ const analyzeTrack = async (url) => {
         platform = 'Spotify';
         lookupFunction = service.findTrackById;
     } else if (url.includes('music.apple.com')) {
-        trackId = extractTrackId(url) // Extract Apple Music track ID
+        trackId = extractTrackId(url); // Extract Apple Music track ID
         
         service = appleService;
         platform = 'AppleMusic';
         lookupFunction = service.findTrackById;
     } else if (url.includes('tidal.com/browse/trac')) {
-        trackId = extractTidalTrackId(url) // Extract Apple Music track ID
+        trackId = extractTidalTrackId(url); // Extract Apple Music track ID
 
         service = tidalService;
         platform = 'Tidal';
         lookupFunction = service.findTrackById;
     } else if(!url.startsWith('http')) {
-        console.log('got here?', url)
-        const results = await matchService.matchSongsAcrossServices(url)
+        console.log('got here?', url);
+        const results = await matchService.matchSongsAcrossServices(url);
         return results;
     
     } else {
@@ -65,6 +65,6 @@ const analyzeTrack = async (url) => {
 
 const AnalyzeServer = {
     analyzeTrack
-}
+};
 
 export default AnalyzeServer;

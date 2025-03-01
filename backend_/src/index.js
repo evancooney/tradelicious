@@ -7,7 +7,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 
-console.log('JAR JAR JAR token', process.env.SPOTIFY_CLIENT_ID,)
+console.log('JAR JAR JAR token', process.env.SPOTIFY_CLIENT_ID,);
 
 var spotifyApi = new SpotifyWebApi({
   clientId: process.env.SPOTIFY_CLIENT_ID,
@@ -25,7 +25,7 @@ then(function(result) {
     console.log(err);
 });
 
-app.post()
+app.post();
 
 
 app.get('/backend', (req, res) => {
@@ -37,7 +37,7 @@ app.get('/backend/spotify', async (req, res) => {
 
   
     const rez = await spotifyApi.getTrack('0RiRZpuVRbi7oqRdSMwhQY?si=dbba7f746f0141f9');
-     console.log(rez.body) 
+     console.log(rez.body); 
      res.json(rez.body);
 
 

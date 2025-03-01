@@ -1,5 +1,5 @@
 import Redis from "ioredis";
-import 'dotenv/config'
+import 'dotenv/config';
 
 const redis = new Redis(process.env.REDIS_CONN); // Connects to Redis on localhost:6379 by default
 

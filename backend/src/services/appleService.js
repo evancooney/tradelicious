@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { standardizeSong } from './standardizeSong.js';
 import { saveCollection } from './redisService.js';
-import tokenService  from '../services/tokenService.js'
+import tokenService  from '../services/tokenService.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -38,7 +38,7 @@ const findTrackById = async (appleTrackId) => {
         const appleTrack = response.data.data[0];
   
         const cleanedAppleTrack = standardizeSong(appleTrack, "appleMusic");
-        console.log(cleanedAppleTrack)
+        console.log(cleanedAppleTrack);
 
         
     
@@ -59,13 +59,13 @@ const findTrackById = async (appleTrackId) => {
         const spotifyTrack = searchResponse.data.tracks.items[0];
     
         const cleanedSpotifyTrack = standardizeSong(spotifyTrack, "spotify");
-        console.log(cleanedSpotifyTrack)
+        console.log(cleanedSpotifyTrack);
 
         const isrc = cleanedSpotifyTrack.isrc;
         const res = {
             shareLink: `${process.env.SHARE_LINK_BASE}/collections/${isrc}`,
             songs: []
-        }
+        };
         
 
         res.songs.push(cleanedAppleTrack);
@@ -73,7 +73,7 @@ const findTrackById = async (appleTrackId) => {
 
         await saveCollection(isrc,res);
         
-        return res
+        return res;
     } catch (error) {
         console.error('Error fetching track:', error);
         return null;
@@ -109,6 +109,6 @@ const spotifyService = {
     findTrackByISRC,
     findTrackById,
     findTrackByLink
-}
+};
 
 export default spotifyService;

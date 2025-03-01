@@ -10,5 +10,7 @@ COPY . .
 
 EXPOSE 3333
 
+RUN yarn build
 
-ENTRYPOINT nodemon /app/src/index.js
+
+ENTRYPOINT yarn dev

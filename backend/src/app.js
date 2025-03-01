@@ -18,7 +18,7 @@ app.use(cors());
 // Setup Redis client
 const redisClient = await createClient({
     url: process.env.REDIS_CONN
-})
+});
 
   redisClient.on('connect', () => {
     console.log('Connected to Redis');

@@ -51,7 +51,7 @@ const findTrackById = async (tidalTrackId) => {
         
         
 
-        const tidalTrack = {...response.data.data }
+        const tidalTrack = {...response.data.data };
 
 
         const cleanedTidalTrack = standardizeSong(tidalTrack, "tidal");
