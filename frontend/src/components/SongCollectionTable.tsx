@@ -42,6 +42,7 @@ const SongCollectionTable: React.FC<SongCollectionTableProps> = ({ songs, shareL
     return link ? <a href={link} target="_blank" rel="noopener noreferrer">{icon}</a> : icon;
   };
 
+
   const copyToClipboard = () => {
     navigator.clipboard.writeText(shareLink);
   };

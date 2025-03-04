@@ -10,7 +10,7 @@ const spotifyApi = new SpotifyWebApi({
 
 const router = new Router();
 
-router.get('/koa/spotify', async (ctx, next) => {
+router.get('/koa/spotify', async (ctx) => {
   //ctx.body = ctx.state.token
   await spotifyApi.clientCredentialsGrant().
     then(function (result: any) {

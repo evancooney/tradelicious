@@ -31,18 +31,18 @@ const standardizeSong = (song, source) => {
     };
   } else if (source === "tidal") {
     return {
-      id: song.id,
-      title: song.attributes?.title || "Unknown",
-      artist: "Unknown", // Default since the artist info is in relationships
-      artistLink: song.relationships?.artists?.links?.self ? `https://tidal.com${song.relationships.artists.links.self}` : null,
-      album: "Unknown", // Default since the album info is in relationships
-      albumLink: song.relationships?.albums?.links?.self ? `https://tidal.com${song.relationships.albums.links.self}` : null,
-      durationMs: parseDuration(song.attributes?.duration) || 0,
-      releaseDate: "Unknown", // Not provided in attributes
-      coverArt: null, // No direct coverArt provided
-      isrc: song.attributes?.isrc || null,
+      id: song?.data?.id,
+      title: song?.data?.attributes?.title || "Unknown",
+      artist: song?.included[1]?.attributes?.name || "Unknown", // Default since the artist info is in relationships
+      artistLink: song?.included[1]?.attributes?.externalLinks[0]?.href,
+      album: song?.included[0]?.attributes?.title || "Uknown",
+      albumLink: song?.included[0]?.attributes?.externalLinks[0]?.href,
+      durationMs: parseDuration(song?.data.attributes?.duration) || 0,
+      releaseDate: song?.included[0]?.attributes?.releaseDate || "Uknown", // Not provided in attributes
+      coverArt: song?.included[0]?.attributes?.imageLinks[5]?.href , // No direct coverArt provided
+      isrc: song?.data?.attributes?.isrc || null,
       source: "Tidal",
-      sourceLink: song.attributes?.externalLinks?.find(link => link.meta.type === "TIDAL_SHARING")?.href || null,
+      sourceLink: song?.data?.attributes?.externalLinks?.find(link => link.meta.type === "TIDAL_SHARING")?.href || null,
     };
   } else if (source === "amazonMusic") {
     return {

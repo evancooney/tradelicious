@@ -13,16 +13,31 @@ const SPOTIFY_TOKEN = process.env.SPOTIFY_TOKEN;
 
 const findTrackByISRC = async (isrc) => {
     try {
-        const token = await tokenService.getAccessToken('appleMusic');
-        const response = await axios.get(`https://api.music.apple.com/v1/catalog/us/songs?filter[isrc]=${isrc}`, {
-            headers: { Authorization: `Bearer ${token}` }});
+        const token = await tokenService.getAccessToken('spotify');
+        const response = await axios.get(`https://api.spotify.com/v1/search?q=isrc:${isrc}&type=track&limit=1`, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
 
-        const appleTrack = response.data.data[0];
-        return appleTrack ? `https://music.apple.com/us/song/${appleTrack.id}` : null;
+        const spotifyTrack = standardizeSong(response.data.tracks.items[0], "spotify");
+        return spotifyTrack;
     } catch (error) {
         console.error('Error fetching track:', error);
         return null;
     }
+};
+
+const findByArtistAndTitle = async (artist, title) => {
+    // Search Spotify for the song and artist
+    const spotifySearchUrl = `https://api.spotify.com/v1/search?q=track:${encodeURIComponent(title)}+artist:${encodeURIComponent(artist)}&type=track&limit=1`;
+    const spotifyToken = await tokenService.getAccessToken('spotify');
+    const searchResponse = await axios.get(spotifySearchUrl, {
+        headers: { Authorization: `Bearer ${spotifyToken}` }
+    });
+
+
+    const spotifyTrack = standardizeSong(searchResponse.data.tracks.items[0], "spotify");
+    
+    return spotifyTrack;
 };
 
 const findTrackById = async (spotifyTrackId) => {
@@ -35,48 +50,22 @@ const findTrackById = async (spotifyTrackId) => {
             headers: { Authorization: `Bearer ${spotifyToken}`}
         });
 
+        console.log(response.data);
+
+        const spotifyTrack = standardizeSong(response.data, "spotify");
+
+    
+      
         
-        
-
-        const songName = response.data.name;
-        const artistName = response.data.artists[0]?.name;
-
-        if (!songName || !artistName) {
-            return null;
-        }
-        const cleanedSpotifyTrack = standardizeSong(response.data, "spotify");
-        console.log(cleanedSpotifyTrack);
-
-        // Search Apple Music for the song and artist
-        const appleSearchUrl = `https://api.music.apple.com/v1/catalog/us/search?term=${encodeURIComponent(songName + ' ' + artistName)}&types=songs&limit=1`;
-        const appleToken = await tokenService.getAccessToken('appleMusic');
-        const searchResponse = await axios.get(appleSearchUrl, {
-            headers: { Authorization: `Bearer ${appleToken}` }
-        });
-
-        const appleTrack = searchResponse.data.results.songs.data[0];
-        const cleanedAppleTrack = standardizeSong(appleTrack, "appleMusic");
-        console.log(cleanedAppleTrack);
-        
-        const isrc = cleanedAppleTrack.isrc;
-        const res = {
-            shareLink: `${process.env.SHARE_LINK_BASE}/collections/${isrc}`,
-            songs: []
-        };
-        
-
-        res.songs.push(cleanedAppleTrack);
-        res.songs.push(cleanedSpotifyTrack);
-
-        await saveCollection(isrc,res);
-        
-        return res;
+        return spotifyTrack;
         // return appleTrack ? `https://music.apple.com/us/song/${appleTrack.id}` : null;
     } catch (error) {
         console.error('Error fetching track:', error);
         return null;
     }
 };
+
+
 
 /**
  * Finds a track on Apple Music using a Spotify link by extracting ISRC.

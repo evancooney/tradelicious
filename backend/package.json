@@ -10,7 +10,7 @@
     "test": "NODE_OPTIONS='--experimental-vm-modules' NODE_ENV=test jest --verbose ",
     "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "nodemon --watch src --exec ts-node src/index.ts"
+    "dev": "nodemon --watch src --exec ts-node src/index.js"
   },
   "type": "module",
   "keywords": [],

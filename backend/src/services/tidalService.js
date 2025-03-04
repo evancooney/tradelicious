@@ -8,6 +8,33 @@ dotenv.config();
 const TIDAL_API_BASE = 'https://openapi.tidal.com/v2';
 
 /**
+ * Finds a track on Tidal using a Tidal track ID
+ * @param {string} tidalTrackId - The Tidal track ID
+ * @returns {Promise<object|null>} - Standardized track data
+ */
+const findTrackById = async (trackId) => {
+    const token = await tokenService.getAccessToken('tidal');
+
+
+    try {
+        const TRACK_URL = `https://openapi.tidal.com/v2/tracks/${trackId}?countryCode=US&include=albums%2C%20artists`;
+       
+
+        // Get song details from Tidal
+        const response = await axios.get(TRACK_URL, {
+            headers: { Authorization: `Bearer ${token}` },
+
+        });
+
+        const tidalTrack = standardizeSong(response.data , "tidal");
+        return tidalTrack;
+    } catch (error) {
+        // console.error('Error fetching track by ID from Tidal:', error.response?.data || error.message);
+        return null;
+    }
+};
+
+/**
  * Finds a track on Tidal using ISRC
  * @param {string} isrc - The ISRC code of the track
  * @returns {Promise<string|null>} - The Tidal track URL or null if not found
@@ -15,77 +42,23 @@ const TIDAL_API_BASE = 'https://openapi.tidal.com/v2';
 const findTrackByISRC = async (isrc) => {
     try {
         const token = await tokenService.getAccessToken('tidal');
-       
-        const response = await axios.get(`${TIDAL_API_BASE}/search/tracks`, {
-            params: { query: isrc, limit: 1, countryCode: 'us' },
+
+        const ISRC_URL = `${TIDAL_API_BASE}/tracks?countryCode=US&include=&filter%5Bisrc%5D=${isrc}&filter%5Bid%5D=`
+        const response = await axios.get(ISRC_URL, {
             headers: { Authorization: `Bearer ${token}` }
         });
 
-        const tidalTrack = response.data.items?.[0];
-        return tidalTrack ? `https://tidal.com/browse/track/${tidalTrack.id}` : null;
+        const trackId = response.data.data[0].id;
+
+        
+        return await findTrackById(trackId);
     } catch (error) {
-       // console.error('Error fetching track by ISRC from Tidal:', error.response?.data || error.message);
+        console.error('Error fetching track by ISRC from Tidal:', error.response?.data || error.message);
         return null;
     }
 };
 
-/**
- * Finds a track on Tidal using a Tidal track ID
- * @param {string} tidalTrackId - The Tidal track ID
- * @returns {Promise<object|null>} - Standardized track data
- */
-const findTrackById = async (tidalTrackId) => {
-    const token = await tokenService.getAccessToken('tidal');
-    
-    
-    try {
-        
-        
-       
 
-        // Get song details from Tidal
-        const response = await axios.get(`${TIDAL_API_BASE}/tracks/${tidalTrackId}?countryCode=us`, {
-            headers: { Authorization: `Bearer ${token}` },
-           
-        });
-        
-        
-
-        const tidalTrack = {...response.data.data };
-
-
-        const cleanedTidalTrack = standardizeSong(tidalTrack, "tidal");
-
-
-        const isrc = cleanedTidalTrack.isrc;
-
-        // Search Apple Music using ISRC
-        const appleToken = await tokenService.getAccessToken('appleMusic');
-        const appleSearchUrl = `https://api.music.apple.com/v1/catalog/us/songs?filter[isrc]=${isrc}`;
-        const appleResponse = await axios.get(appleSearchUrl, {
-            headers: { Authorization: `Bearer ${appleToken}` }
-        });
-
-        const appleTrack = appleResponse.data.data?.[0];
-        const cleanedAppleTrack = appleTrack ? standardizeSong(appleTrack, "appleMusic") : null;
-        console.log("Apple Music Track:", cleanedAppleTrack);
-
-        const res = {
-            shareLink: `${process.env.SHARE_LINK_BASE}/collections/${isrc}`,
-            songs: [cleanedTidalTrack]
-        };
-
-        if (cleanedAppleTrack) {
-            res.songs.push(cleanedAppleTrack);
-        }
-
-        await saveCollection(isrc, res);
-        return res;
-    } catch (error) {
-        // console.error('Error fetching track by ID from Tidal:', error.response?.data || error.message);
-        return null;
-    }
-};
 
 /**
  * Finds a track on Tidal using a link (extracts ISRC and searches)
@@ -96,7 +69,7 @@ const findTrackByLink = async (tidalTrackId) => {
     try {
         const token = await tokenService.getAccessToken('tidal');
         const tidalApiUrl = `${TIDAL_API_BASE}/tracks/${tidalTrackId}`;
-        const tidalResponse = await axios.get(tidalApiUrl, { countryCode: 'us'} ,{
+        const tidalResponse = await axios.get(tidalApiUrl, { countryCode: 'us' }, {
             headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -105,7 +78,7 @@ const findTrackByLink = async (tidalTrackId) => {
 
         return await findTrackById(isrc);
     } catch (error) {
-      //  console.error('Error fetching track from Tidal:', error.response?.data || error.message);
+        //  console.error('Error fetching track from Tidal:', error.response?.data || error.message);
         return null;
     }
 };

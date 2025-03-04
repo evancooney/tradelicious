@@ -107,6 +107,7 @@ export function analyzeMusicUrl(urlString: string): AnalyzedMusicUrl {
 
     return { service, type, id };
   } catch (error) {
+    console.log(error)
     // If there's a URL parsing error or something unexpected, return unknown
     return { service, type, id };
   }

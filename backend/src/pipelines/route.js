@@ -1,7 +1,7 @@
 // routes/music.js
 import { Router } from 'express';
 import Redis from 'ioredis';
-import { runTrackScanPipeline } from './stesController.js';
+import { runTrackScanPipeline } from './stepsController.js';
 
 const router = Router();
 const redis = new Redis(process.env.REDIS_CONN);

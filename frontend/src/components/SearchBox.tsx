@@ -42,7 +42,6 @@ const GoogleSearchBox: React.FC<GoogleSearchBoxProps> = ({ onSearch, query, setQ
           maxWidth: 700,
           p: 3,
           borderRadius: "50px",
-          
           boxShadow: 2,
         }}
       >
@@ -54,7 +53,6 @@ const GoogleSearchBox: React.FC<GoogleSearchBoxProps> = ({ onSearch, query, setQ
           value={query}
           onChange={handleInputChange}
           onPaste={(e) => {
-            console.log('this is the query', query);
             console.log(e.clipboardData.getData('text/plain'));
             onSearch(e.clipboardData.getData('text/plain'));
           }}

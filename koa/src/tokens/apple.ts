@@ -16,7 +16,7 @@ router.use(async (ctx, next) => {
   await next();
 });
 
-router.get('/koa/apple', (ctx, next) => {
+router.get('/koa/apple', (ctx) => {
   ctx.body = ctx.state.token
 });
 

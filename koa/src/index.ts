@@ -12,7 +12,7 @@ const router = new Router();
 app.use(cors());
 
 
-  router.get('/koa', (ctx, next) => {
+  router.get('/koa', (ctx) => {
     ctx.body = 'token town';
   });
 

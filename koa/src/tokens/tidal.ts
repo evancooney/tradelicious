@@ -40,7 +40,7 @@ router.use(async (ctx, next) => {
 
 
 });
-router.get('/koa/tidal', async (ctx, next) => {
+router.get('/koa/tidal', async (ctx) => {
 
     // const token = await getTidalAuthToken();
 

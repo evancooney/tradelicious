@@ -9,9 +9,9 @@ const COLLECTION_PREFIX = "songCollection:";
  * Saves a collection of songs to Redis
  * @param {string} collectionId - Unique ID for the collection
  * @param {object} collection - Collection object containing songs
- * @param {number} [ttl=86400] - Expiry time in seconds (default: 24 hours)
+ * @param {number} [ttl=86400] - Expiry time in seconds (default: 24 hours) or 10 years 315360000
  */
-const saveCollection = async (collectionId, collection, ttl = 86400) => {
+const saveCollection = async (collectionId, collection, ttl = 315360000 ) => {
   try {
     const key = `${COLLECTION_PREFIX}${collectionId}`;
     await redis.set(key, JSON.stringify(collection), "EX", ttl);

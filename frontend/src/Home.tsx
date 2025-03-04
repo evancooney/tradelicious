@@ -1,10 +1,11 @@
-import { useState,  useEffect } from "react";
-import {  Typography,CircularProgress } from "@mui/material";
+import { useState, useEffect } from "react";
+import { Typography, CircularProgress } from "@mui/material";
 import SongCollectionTable from './components/SongCollectionTable';
 import { useParams } from 'react-router-dom';
 import SearchBox from './components/SearchBox';
 
 interface ResponseData {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
 }
 
@@ -20,42 +21,46 @@ export default function Home() {
 
   useEffect(() => {
     if (key) {
-        const getLink = async () => {
+      const getLink = async () => {
         try {
-            setLoading(true);  
-          const res = await fetch(import.meta.env.VITE_API_URL + '/collections/'
-            + key, {
+          console.log('Looking up old redis ID', key);
+          const url = import.meta.env.VITE_API_URL + '/collections/' + key;
+          console.log('at URL', url);
+          setLoading(true);
+          const res = await fetch(url, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
             }
           });
           const data: ResponseData = await res.json();
-          
+
+
           setResponse(data);
-      
-        
+
+
         } catch (error) {
           console.error("Error sending request:", error);
           setResponse({ error: "Failed to send request" });
-        
+
         }
         finally {
-            setLoading(false)
+          setLoading(false)
+
         }
+      }
+      getLink();
+
     }
-    getLink();
-       
-    }
-}, [key]); 
-  
+  }, [key]);
 
 
-  const handleSubmit = async (text:string) => {
+
+  const handleSubmit = async (text: string) => {
 
 
     try {
-        setLoading(true);  
+      setLoading(true);
       const res = await fetch(import.meta.env.VITE_API_URL + '/analyze', {
         method: "POST",
         headers: {
@@ -64,57 +69,59 @@ export default function Home() {
         body: JSON.stringify({ text }),
       });
       const data: ResponseData = await res.json();
-      
+
       setResponse(data);
-   
-    
+
+
     } catch (error) {
       console.error("Error sending request:", error);
       setResponse({ error: "Failed to send request" });
-    
+
     }
     finally {
-        setLoading(false)
-    }}
-
+      setLoading(false)
+    }
+  }
 
 
 
 
   return (
-    
-    
-    <div style={{margin: 'auto', textAlign: 'center', marginTop: '10vh'} }>
 
-   
-     <Typography variant="h1" >
+
+    <div style={{ margin: 'auto', textAlign: 'center', marginTop: '10vh' }}>
+
+
+      <Typography variant="h1" >
         Tradelicious
-    </Typography>
-    <Typography variant="h2" gutterBottom>
-     Easily share music across platforms
-        </Typography >
-           
-    <SearchBox onSearch={handleSubmit} query={query} setQuery={setQuery} />
+      </Typography>
+      <Typography variant="h2" gutterBottom>
+        Easily share music across platforms
+      </Typography >
+      <div style={{ marginLeft: 30, marginRight: 30 }}>
+        <SearchBox onSearch={handleSubmit} query={query} setQuery={setQuery} />
+      </div>
 
-    {/* <Typography style={{color: '#999', padding: 25}}  >
-        Don't have a link handy? Paste this into the textbox: <br/>https://music.apple.com/us/album/limp/153019510?i=153019649
-    </Typography> */}
-    
-   
-  
+
+
+
+
+
       <div>
-        { loading &&
-              
-                <CircularProgress size={80} thickness={5} />
-            
-            
-         
+        {loading &&
+
+          <CircularProgress size={80} thickness={5} />
+
+
+
         }
-      {response && response?.songs?.length > 0 && 
-          <SongCollectionTable songs={response.songs} shareLink={response.shareLink}/>
+        {response && response?.songs?.length > 0 &&
+          <div style={{ maxWidth: 1400, margin: 'auto' }}>
+            <SongCollectionTable songs={response.songs} shareLink={response.shareLink} />
+          </div>
         }
       </div>
-      
-      </div>
+
+    </div>
   );
 }
