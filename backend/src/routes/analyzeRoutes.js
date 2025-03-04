@@ -6,7 +6,7 @@ const router = express.Router();
 router.post('/', async (req, res) => {
     const { text } = req.body;
 
-    console.log(req.body)
+    console.log(req.body);
 
     if (!text) {
         return res.status(400).json({ message: 'No URL provided' });

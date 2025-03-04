@@ -3,7 +3,7 @@ import app from '../app.js';
 import { jest } from '@jest/globals';
 import spotifyService from '../services/spotifyService.js';
 
-jest.clearAllMocks()
+jest.clearAllMocks();
 
 const spy = jest.spyOn(spotifyService, 'findTrackByISRC').mockResolvedValue('https://open.spotify.com/track/0987654321');
 

@@ -1,0 +1,32 @@
+{
+    "compilerOptions": {
+      // Use whatever module system you prefer (CommonJS or ESM),
+      // Node apps often stick with "commonjs" or "node16".
+      "module": "commonjs",
+      "target": "es2017",
+  
+      // This flag allows TypeScript to compile .js files:
+      "allowJs": true,
+  
+      // If you only want TypeScript checking for .ts files
+      // and not .js files, keep `checkJs` disabled (false):
+      "checkJs": false,
+  
+      // Generate output files in the 'dist' folder
+      "outDir": "dist",
+  
+      // Include definitions from Node
+      "lib": ["es2017"],
+  
+      // Enable default TypeScript behaviors that reduce friction
+      "esModuleInterop": true,
+      "strict": true
+    },
+    "include": [
+      "src/**/*" // your source files (both .ts and .js)
+    ],
+    "exclude": [
+      "node_modules"
+    ]
+  }
+  
